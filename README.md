@@ -10,16 +10,3 @@ Documentation frontend for the Dreamcatcher REST API. It covers groups, albums, 
 </p>
 
 Built with Nx, RxJS, and Highlight.js.
-
-## Run locally
-
-```sh
-pnpm install
-pnpm nx serve dreamcatcher-docs
-```
-
-Create a production build with:
-
-```sh
-pnpm nx build dreamcatcher-docs
-```
