@@ -1,0 +1,99 @@
+<div class="w-full bg-gray-50 py-10">
+  <section id="members" class="w-full max-w-5xl mx-auto px-6">
+    <h2 class="font-montserrat text-[40pt] text-[#333] text-center font-bold tracking-wider mb-6">
+      MEMBERS
+    </h2>
+    <div class="flex flex-wrap justify-start gap-6" [attr.aria-busy]="landingService.membersResource.isLoading()">
+      @if (landingService.membersResource.isLoading()) {
+      @for (card of skeletonCards; track $index) {
+      <div class="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]">
+        <p-card class="rounded-none">
+          <ng-template #header>
+            <p-skeleton class="w-full aspect-4/5" height="auto" borderRadius="0" />
+          </ng-template>
+          <div class="flex justify-between items-center w-full pt-2">
+            <p-skeleton width="7rem" height="1rem" borderRadius="4px" />
+            <p-skeleton width="4rem" height="0.875rem" borderRadius="4px" />
+          </div>
+        </p-card>
+      </div>
+      }
+      } @else if (landingService.membersResource.error()) {
+      <p-message severity="error" class="block w-full font-montserrat">
+        We couldn't load the members. Please refresh the page and try again.
+      </p-message>
+      } @else {
+      @for (member of landingService.membersResource.value() ?? []; track member.id) {
+      <div class="group w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]">
+        <p-card class="rounded-none">
+          <ng-template #header>
+            <div class="relative overflow-hidden">
+              <img [src]="member.imageUrl" [alt]="member.stageName"
+                class="block w-full aspect-4/5 object-cover object-top" />
+              <div class="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/40"></div>
+            </div>
+          </ng-template>
+          <div class="flex justify-between items-center w-full pt-2">
+            <span class="font-jakarta font-bold text-black">{{ member.stageName }}</span>
+            <span class="font-semibold text-neutral-700 text-sm">{{ member.nationality }}</span>
+          </div>
+        </p-card>
+      </div>
+      } @empty {
+      <p class="font-montserrat text-gray-500">No members available.</p>
+      }
+      }
+    </div>
+  </section>
+</div>
+
+<div class="w-full bg-gray-50 py-10">
+  <section id="discography" class="w-full max-w-5xl mx-auto px-6">
+    <h2 class="font-montserrat text-[40pt] text-[#333] text-center font-bold tracking-wider mb-6">
+      DISCOGRAPHY
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr gap-6"
+      [attr.aria-busy]="landingService.albumsResource.isLoading()">
+      @if (landingService.albumsResource.isLoading()) {
+      @for (album of skeletonAlbums; track $index) {
+      <div>
+        <p-card class="rounded-none h-full">
+          <ng-template #header>
+            <p-skeleton class="w-full aspect-square" height="auto" borderRadius="0" />
+          </ng-template>
+          <div class="flex justify-between items-start gap-2 w-full pt-2">
+            <p-skeleton width="8rem" height="1rem" borderRadius="4px" />
+            <p-skeleton width="4.5rem" height="0.875rem" borderRadius="4px" class="pt-0.5" />
+          </div>
+        </p-card>
+      </div>
+      }
+      } @else if (landingService.albumsResource.error()) {
+      <p-message severity="error" class="block w-full col-span-full font-montserrat">
+        We couldn't load the albums. Please refresh the page and try again.
+      </p-message>
+      } @else {
+      @for (album of albums(); track album.id) {
+      <div class="group">
+        <p-card class="rounded-none h-full">
+          <ng-template #header>
+            <div class="relative overflow-hidden">
+              <img [src]="album.albumImage" [alt]="album.albumTitle" class="block w-full aspect-square object-cover" />
+              <div class="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/40"></div>
+            </div>
+          </ng-template>
+          <div class="flex justify-between items-start gap-2 w-full pt-2">
+            <span class="font-bold text-gray-900 text-base min-w-0 wrap-break-word">{{ album.albumTitle }}</span>
+            <span class="font-semibold text-neutral-700 text-sm text-right shrink-0 pt-0.5">{{ album.albumType }} · {{ album.releaseDate }}</span>
+          </div>
+        </p-card>
+      </div>
+      } @empty {
+      <p class="font-montserrat text-gray-500 col-span-full">
+        No albums available.
+      </p>
+      }
+      }
+    </div>
+  </section>
+</div>

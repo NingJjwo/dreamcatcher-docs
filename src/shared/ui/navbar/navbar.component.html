@@ -1,0 +1,22 @@
+<nav
+  class="sticky top-0 z-30 h-16 w-full border-b border-gray-200 bg-white px-4 md:px-8 flex items-center justify-between"
+>
+  <a
+    routerLink="/"
+    class="font-jakarta font-semibold text-xl uppercase tracking-[0.2em] text-gray-800"
+  >
+    Dreamcatcher
+  </a>
+
+  <a
+    pButton
+    routerLink="/docs"
+    routerLinkActive
+    #docsLink="routerLinkActive"
+    [severity]="docsLink.isActive ? 'help' : 'contrast'"
+    [outlined]="!docsLink.isActive"
+    [style.padding-inline]="'1.25rem'"
+  >
+    <span class="p-button-label">Docs</span>
+  </a>
+</nav>

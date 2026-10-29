@@ -1,0 +1,140 @@
+<div class="flex min-h-screen bg-white">
+  <aside class="sticky top-0 hidden h-screen w-72 shrink-0 overflow-y-auto border-r border-gray-200 p-4 md:block">
+    <nav aria-label="Documentation sidebar">
+      <p-menu
+        [model]="menuItems"
+        class="block w-full"
+        [dt]="{
+          root: {
+            borderColor: 'transparent',
+            background: 'transparent',
+            shadow: 'none',
+            padding: '0'
+          },
+          list: { padding: '0' },
+          submenuHeader: {
+            padding: '0',
+            background: 'transparent'
+          },
+          item: {
+            padding: '0',
+            focusBackground: 'transparent',
+            hoverBackground: 'transparent'
+          }
+        }"
+      >
+        <ng-template #submenuheader let-item>
+          <span class="block px-4 pb-2 pt-4 text-2xl font-black tracking-tight text-gray-900">
+            {{ item.label }}
+          </span>
+        </ng-template>
+
+        <ng-template #item let-item>
+          <a
+            routerLink="/docs"
+            [fragment]="item.anchor"
+            class="group flex w-full cursor-pointer items-center gap-3 rounded-md py-2 pl-8 pr-4 transition-colors focus-visible:outline-2 focus-visible:outline-violet-600"
+          >
+            @if (item.icon) {
+              <i
+                [class]="item.icon"
+                class="text-xl text-gray-500 transition-colors group-hover:text-violet-700"
+              ></i>
+            }
+            <span class="text-lg font-semibold text-gray-600 transition-colors group-hover:text-violet-700">
+              {{ item.label }}
+            </span>
+          </a>
+        </ng-template>
+      </p-menu>
+    </nav>
+  </aside>
+
+  <div class="min-w-0 flex-1">
+    <nav aria-label="Documentation sections" class="flex gap-5 overflow-x-auto border-b border-slate-200 px-5 py-3 text-sm md:hidden">
+      <a href="#rest-introduction" class="shrink-0 text-slate-700 hover:text-violet-700">REST</a>
+      <a href="#groups-schema" class="shrink-0 text-slate-700 hover:text-violet-700">Groups</a>
+      <a href="#albums-schema" class="shrink-0 text-slate-700 hover:text-violet-700">Albums</a>
+      <a href="#idols-schema" class="shrink-0 text-slate-700 hover:text-violet-700">Idols</a>
+    </nav>
+
+    <main class="mx-auto w-full max-w-6xl space-y-16 px-5 py-10 md:px-12 md:py-14">
+      <div class="space-y-8">
+        <header id="rest-introduction" class="scroll-mt-8 border-y border-violet-200 bg-violet-50/60 px-6 py-8 md:px-10 md:py-10">
+          <div class="border-l-4 border-violet-700 pl-5 md:pl-7">
+            <p class="mb-3 text-xs font-bold uppercase text-violet-800">K-pop API · Reference</p>
+            <h1 class="font-montserrat text-4xl font-black text-slate-950 md:text-5xl">REST</h1>
+            <p class="mt-4 max-w-3xl text-base leading-7 text-slate-700 md:text-lg md:leading-8">
+              REST organizes an API around resources and predictable URLs. Explore K-pop groups, albums, and idols through read-only GET requests.
+            </p>
+          </div>
+        </header>
+        <section class="space-y-2">
+          <h2 class="font-montserrat text-3xl font-bold text-slate-950">REST</h2>
+          <p class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-lg text-slate-600">
+            <span class="font-semibold">Base URL:</span>
+            <code class="min-w-0 break-all font-jakarta text-lg text-slate-700">{{ apiBaseUrl }}</code>
+          </p>
+        </section>
+      </div>
+
+      @for (resource of resources; track resource.id) {
+        <section class="scroll-mt-8 space-y-8" [attr.aria-labelledby]="resource.id + '-title'">
+          <header>
+            <h2 [id]="resource.id + '-title'" class="font-montserrat text-3xl font-bold text-slate-950">{{ resource.title }}</h2>
+            <p class="mt-2 text-lg text-slate-600">{{ resource.summary }}</p>
+          </header>
+
+          <div [id]="resource.id + '-schema'" class="scroll-mt-8 space-y-4">
+            <h3 class="font-montserrat text-xl font-bold text-slate-900">{{ resource.title }} schema</h3>
+            <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-xs">
+              <p-table
+                [value]="resource.schema"
+                [tableStyle]="{ 'min-width': '40rem' }"
+                [dt]="{ root: { padding: '0' } }"
+              >
+                <ng-template #header>
+                  <tr class="border-b border-gray-200 bg-gray-50 text-left">
+                    <th scope="col" class="w-1/4 px-4 py-3 text-sm font-bold text-gray-900">Key</th>
+                    <th scope="col" class="w-1/4 px-4 py-3 text-sm font-bold text-gray-900">Type</th>
+                    <th scope="col" class="w-2/4 px-4 py-3 text-sm font-bold text-gray-900">Description</th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-row>
+                  <tr class="border-b border-gray-100 transition-colors last:border-none hover:bg-gray-50/50">
+                    <td class="px-4 py-3 font-mono text-sm font-medium text-gray-900">{{ row.key }}</td>
+                    <td class="px-4 py-3 font-mono text-sm text-gray-600">{{ row.type }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600">{{ row.description }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+
+          @for (endpoint of resource.endpoints; track endpoint.id) {
+            <article [id]="endpoint.id" class="scroll-mt-8 space-y-4">
+              <div>
+                <h3 class="font-montserrat text-xl font-bold text-slate-900">{{ endpoint.title }}</h3>
+                <p class="mt-1 text-slate-600">{{ endpoint.description }}</p>
+              </div>
+
+              <div class="overflow-hidden rounded-lg border border-slate-800 bg-slate-900 shadow-lg">
+                <div class="flex items-center gap-6 border-b-2 border-slate-700 px-5 py-4">
+                  <span class="shrink-0 font-jakarta text-sm font-bold text-emerald-400">{{ endpoint.method }}</span>
+                  <span class="min-w-0 break-all font-jakarta text-sm text-slate-300 select-all">{{ apiBaseUrl }}{{ endpoint.path }}</span>
+                </div>
+                <div class="overflow-x-auto p-5 text-slate-300">
+                  <pre class="m-0 whitespace-pre font-mono text-sm leading-6"><code
+                    [highlight]="endpoint.response"
+                    language="json"
+                    class="idol-code bg-transparent p-0 [&_.hljs-attr]:text-purple-400 [&_.hljs-string]:text-emerald-300 [&_.hljs-number]:text-amber-400 [&_.hljs-literal]:text-sky-300"
+                  ></code></pre>
+                </div>
+              </div>
+            </article>
+          }
+        </section>
+      }
+    </main>
+  </div>
+</div>
