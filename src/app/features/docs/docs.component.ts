@@ -43,7 +43,7 @@ const sampleIdol = {
   nationality: 'South Korean',
   loreConcept: 'Nightmare of being chased',
   imageUrl: `${assetBaseUrl}/images/dreamcatcher/idols/jiu.png`,
-  positions: ['Leader'],
+  positions: ['Leader', 'Lead Vocalist', 'Lead Dancer', 'Visual'],
 };
 
 const sampleGroup = {
