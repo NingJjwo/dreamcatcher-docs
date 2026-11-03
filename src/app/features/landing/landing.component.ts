@@ -4,6 +4,7 @@ import { Message } from 'primeng/message';
 import { Skeleton } from 'primeng/skeleton';
 import { LandingApiService } from './services/landing-api.service';
 
+const TOTAL_MEMBERS_COUNT = 8;
 const ALBUM_PREVIEW_COUNT = 6;
 
 function shuffle<T>(items: readonly T[]): T[] {
@@ -24,7 +25,7 @@ function shuffle<T>(items: readonly T[]): T[] {
 })
 export class LandingComponent {
   protected readonly landingService = inject(LandingApiService);
-  protected readonly skeletonCards = Array.from({ length: 7 });
+  protected readonly skeletonCards = Array.from({ length: TOTAL_MEMBERS_COUNT });
   protected readonly skeletonAlbums = Array.from({ length: ALBUM_PREVIEW_COUNT });
 
   protected readonly albums = computed(() => {
